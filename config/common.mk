@@ -1,3 +1,16 @@
+# microG packages
+PRODUCT_PACKAGES += \
+    GmsCore \
+    GsfProxy \
+    FakeStore \
+    FDroid \
+    FDroidPrivilegedExtension \
+    MozillaNlpBackend \
+    NominatimNlpBackend \
+    com.google.android.maps.jar
+# Privacy-friendly netmonitor
+PRODUCT_PACKAGES += privacy-friendly-netmonitor
+
 # Make sure that device overlays won't prevent the use
 # of microG as location provider
 PRODUCT_PACKAGE_OVERLAYS := vendor/lineage/overlay/microg
@@ -140,7 +153,6 @@ PRODUCT_PACKAGES += \
     Jelly \
     LockClock \
     Trebuchet \
-    Updater \
     WallpaperPicker \
     WeatherProvider
 
@@ -262,11 +274,6 @@ ifndef LINEAGE_BUILDTYPE
         RELEASE_TYPE := $(shell echo $(RELEASE_TYPE) | sed -e 's|^LINEAGE_||g')
         LINEAGE_BUILDTYPE := $(RELEASE_TYPE)
     endif
-endif
-
-# Filter out random types, so it'll reset to UNOFFICIAL
-ifeq ($(filter RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL,$(LINEAGE_BUILDTYPE)),)
-    LINEAGE_BUILDTYPE :=
 endif
 
 ifdef LINEAGE_BUILDTYPE
