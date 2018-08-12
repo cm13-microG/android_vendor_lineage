@@ -1,3 +1,10 @@
+# Sign with own key
+ifneq ($(OWN_KEYS_DIR),)
+PRODUCT_DEFAULT_DEV_CERTIFICATE := $(OWN_KEYS_DIR)/releasekey
+PRODUCT_OTA_PUBLIC_KEYS := $(OWN_KEYS_DIR)/releasekey
+PRODUCT_EXTRA_RECOVERY_KEYS := $(OWN_KEYS_DIR)/releasekey
+endif
+
 # microG packages
 PRODUCT_PACKAGES += \
     GmsCore \
