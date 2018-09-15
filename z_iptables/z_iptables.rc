@@ -1,0 +1,17 @@
+service z_ipt_set /system/bin/z_iptables set
+    class main
+    user root
+    oneshot
+
+service z_ipt_flush /system/bin/z_iptables flush
+    class main
+    user root
+    oneshot
+    disabled
+
+on property:persist.privacy.iptab_blk=1
+    start z_ipt_set
+
+on property:persist.privacy.iptab_blk=0
+    start z_ipt_flush
+

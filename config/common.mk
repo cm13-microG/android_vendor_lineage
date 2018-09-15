@@ -17,6 +17,8 @@ PRODUCT_PACKAGES += \
     com.google.android.maps.jar
 # Privacy-friendly netmonitor
 PRODUCT_PACKAGES += privacy-friendly-netmonitor
+# IPTABLES Block script
+PRODUCT_PACKAGES += z_iptables
 
 # Make sure that device overlays won't prevent the use
 # of microG as location provider
