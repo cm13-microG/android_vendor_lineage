@@ -1,3 +1,6 @@
+# Allow vendor/extra to override any property by setting it first
+$(call inherit-product-if-exists, vendor/extra/product.mk)
+
 # Sign with own key
 ifneq ($(OWN_KEYS_DIR),)
 PRODUCT_DEFAULT_DEV_CERTIFICATE := $(OWN_KEYS_DIR)/releasekey
@@ -381,5 +384,3 @@ endif
 
 -include $(WORKSPACE)/build_env/image-auto-bits.mk
 -include vendor/lineage/config/partner_gms.mk
-
-$(call prepend-product-if-exists, vendor/extra/product.mk)
