@@ -2,6 +2,7 @@ service z_ipt_set /system/bin/z_iptables set
     class main
     user root
     oneshot
+    disabled
 
 service z_ipt_flush /system/bin/z_iptables flush
     class main

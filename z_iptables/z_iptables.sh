@@ -26,7 +26,7 @@ EOF
 ## Create IPTABLES return statement for the Google exception
 ##
 jump_app() {
-APP_UID=`dumpsys package "$1" | grep userId= | cut -d= -f2 - | cut -d' ' -f1 - | uniq`
+APP_UID=`stat -c %u "/data/data/$1"`
 $IPTABLES -A 'oem_out' -m owner --uid-owner $APP_UID -j RETURN
 }
 
@@ -61,7 +61,7 @@ $IPTABLES -A 'oem_out' -d 179.60.192.0/22 -j REJECT --reject-with icmp-port-unre
 $IPTABLES -A 'oem_out' -d 185.60.216.0/22 -j REJECT --reject-with icmp-port-unreachable
 $IPTABLES -A 'oem_out' -d 204.15.20.0/22 -j REJECT --reject-with icmp-port-unreachable
 
-# Shoot Google exceptions
+# Shoot Google exceptions (app list)
 list_apps | while read APP; do
   jump_app "$APP"
 done
@@ -189,12 +189,10 @@ $IPTABLES -A 'oem_out' -d 216.252.220.0/22 -j REJECT --reject-with icmp-port-unr
 ##
 ## If executed manually via command line, the system properties need
 ## to be set as well
-## NOTE: The white-space after the ] of the IF-statement must remain!
 ##
 set_prop() {
   PROP_STATE=$( getprop persist.privacy.iptab_blk )
-  if [ "$PROP_STATE" != "$1" ] 
-      then
+  if [ "$PROP_STATE" != "$1" ]; then
       setprop persist.privacy.iptab_blk $1
   fi
 }
