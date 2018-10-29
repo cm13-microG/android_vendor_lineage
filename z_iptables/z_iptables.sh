@@ -16,9 +16,10 @@ cat <<EOF
 com.android.captiveportallogin
 com.android.providers.downloads
 com.google.android.gms
-org.schabi.newpipe
 com.github.yeriomin.yalpstore
 com.netflix.mediaclient
+org.schabi.newpipe
+com.vonglasow.michael.satstat
 EOF
 }
 
@@ -65,6 +66,8 @@ $IPTABLES -A 'oem_out' -d 204.15.20.0/22 -j REJECT --reject-with icmp-port-unrea
 list_apps | while read APP; do
   jump_app "$APP"
 done
+# Further exception for GPS (Test only)
+$IPTABLES -A 'oem_out' -m owner --uid-owner 1021 -j RETURN
 
 # Block outgoing IPv6 traffic to Google
 $IP6TABLES -A 'oem_out' -d 2001:4860::/32 -j REJECT --reject-with icmp6-port-unreachable
