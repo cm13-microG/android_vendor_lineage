@@ -25,10 +25,14 @@ EOF
 
 ##
 ## Create IPTABLES return statement for the Google exception
+## (only if respective app from exception list is installed)
 ##
 jump_app() {
-APP_UID=`stat -c %u "/data/data/$1"`
-$IPTABLES -A 'oem_out' -m owner --uid-owner $APP_UID -j RETURN
+APP_DIR="/data/data/$1"
+if [ -d "$APP_DIR" ]; then
+  APP_UID=`stat -c %u "$APP_DIR"`
+  $IPTABLES -A 'oem_out' -m owner --uid-owner $APP_UID -j RETURN
+fi
 }
 
 ##
