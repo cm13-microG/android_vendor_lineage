@@ -17,7 +17,8 @@ PRODUCT_PACKAGES += \
     FDroidPrivilegedExtension \
     MozillaNlpBackend \
     NominatimNlpBackend \
-    com.google.android.maps.jar
+    com.google.android.maps.jar \
+    RemoteDroidGuard
 # Privacy-friendly netmonitor
 PRODUCT_PACKAGES += privacy-friendly-netmonitor
 # IPTABLES Block script
