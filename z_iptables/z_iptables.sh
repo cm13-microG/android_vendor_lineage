@@ -21,6 +21,7 @@ com.netflix.mediaclient
 org.schabi.newpipe
 com.vonglasow.michael.satstat
 org.microg.gms.droidguard
+org.freeandroidtools.safetynettest
 EOF
 }
 
