@@ -15,13 +15,14 @@ list_apps() {
 cat <<EOF
 com.android.captiveportallogin
 com.android.providers.downloads
-com.google.android.gms
+com.aurora.store
 com.github.yeriomin.yalpstore
+com.google.android.gms
 com.netflix.mediaclient
-org.schabi.newpipe
 com.vonglasow.michael.satstat
-org.microg.gms.droidguard
 org.freeandroidtools.safetynettest
+org.microg.gms.droidguard
+org.schabi.newpipe
 EOF
 }
 
