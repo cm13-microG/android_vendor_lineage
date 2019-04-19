@@ -10,9 +10,28 @@ service z_ipt_flush /system/bin/z_iptables flush
     oneshot
     disabled
 
+service z_ipt_dns_on /system/bin/z_iptables dns_on
+    class main
+    user root
+    oneshot
+    disabled
+
+service z_ipt_dns_off /system/bin/z_iptables dns_off
+    class main
+    user root
+    oneshot
+    disabled
+
+
 on property:persist.privacy.iptab_blk=1
     start z_ipt_set
 
 on property:persist.privacy.iptab_blk=0
     start z_ipt_flush
+
+on property:persist.privacy.iptab_dns_switch=1
+    start z_ipt_dns_on
+
+on property:persist.privacy.iptab_dns_switch=0
+    start z_ipt_dns_off
 

@@ -39,6 +39,77 @@ fi
 }
 
 ##
+## IPv4: Check, whether the specified chain in table 'nat' exists
+##
+ip4_n_chain_exists() {
+  $IPTABLES -t nat -n --list "$1" >/dev/null 2>&1
+}
+
+##
+## IPv4: Check, whether the specified OUTPUT rule in table 'nat' exists
+##
+ip4_n_outrl_exists() {
+  $IPTABLES -t nat -C OUTPUT -j "$1" >/dev/null 2>&1
+}
+
+##
+## IPv4: Redirect DNS requests (port 53), except for VPN
+##
+ip4_set_dns() {
+  $IPTABLES -t nat -A "$1" ! -o tun+ -p udp --dport 53 -j DNAT --to-destination "$2":53
+  $IPTABLES -t nat -A "$1" ! -o tun+ -p tcp --dport 53 -j DNAT --to-destination "$2":53
+}
+
+##
+## IPv6: Check, whether the specified chain in table 'nat' exists
+##
+ip6_n_chain_exists() {
+  $IP6TABLES -t nat -n --list "$1" >/dev/null 2>&1
+}
+
+##
+## IPv6: Check, whether the specified OUTPUT rule in table 'nat' exists
+##
+ip6_n_outrl_exists() {
+  $IP6TABLES -t nat -C OUTPUT -j "$1" >/dev/null 2>&1
+}
+
+##
+## IPv6: Redirect DNS requests (port 53), except for VPN
+##
+ip6_set_dns() {
+  $IP6TABLES -t nat -A "$1" ! -o tun+ -p udp --dport 53 -j DNAT --to-destination ["$2"]:53
+  $IP6TABLES -t nat -A "$1" ! -o tun+ -p tcp --dport 53 -j DNAT --to-destination ["$2"]:53
+}
+
+##
+## Initialize and redirect DNS requests, if set accordingly
+##
+init_dns() {
+# create/initialize the 'cust_dns' chains, if they do not exist, yet
+ip4_n_chain_exists 'cust_dns' || $IPTABLES -t nat -N 'cust_dns'
+ip4_n_outrl_exists 'cust_dns' || $IPTABLES -t nat -A OUTPUT -j 'cust_dns'
+ip6_n_chain_exists 'cust_dns' || $IP6TABLES -t nat -N 'cust_dns'
+ip6_n_outrl_exists 'cust_dns' || $IP6TABLES -t nat -A OUTPUT -j 'cust_dns'
+# Flush the 'cust_dns' chains
+$IPTABLES -t nat -F 'cust_dns'
+$IP6TABLES -t nat -F 'cust_dns'
+# Get DNS properties
+PROP_DNS=$( getprop persist.privacy.iptab_dns_switch )
+PROP_IP4=$( getprop persist.privacy.iptab_dns_srvip4 )
+PROP_IP6=$( getprop persist.privacy.iptab_dns_srvip6 )
+# if custom DNS is specified, set it
+if [ "$1" == "1" ]; then
+    [ -n "$PROP_IP4" ] && ip4_set_dns 'cust_dns' $PROP_IP4
+    [ -n "$PROP_IP6" ] && ip6_set_dns 'cust_dns' $PROP_IP6
+fi
+# Set property, if not yet set
+if [ "$PROP_DNS" != "$1" ]; then
+    setprop persist.privacy.iptab_dns_switch $1
+fi
+}
+
+##
 ## Flush OWN roles only
 ##
 flush_oem() {
@@ -211,6 +282,12 @@ set_prop() {
 ## Main run
 ##
 case "$1" in
+  dns_on) init_dns 1
+    ;;
+
+  dns_off) init_dns 0
+    ;;
+
   set)  flush_oem
         do_block
         set_prop 1
