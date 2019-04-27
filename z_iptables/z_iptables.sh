@@ -111,6 +111,16 @@ fi
 }
 
 ##
+## Set DNS according to defined DNS property
+##
+set_dns() {
+PROP_DNS=$( getprop persist.privacy.iptab_dns_switch )
+if [ "$PROP_DNS" == "1" ]; then
+    init_dns 1
+fi
+}
+
+##
 ## Flush OWN roles only
 ##
 flush_oem() {
@@ -290,6 +300,7 @@ case "$1" in
     ;;
 
   set)  flush_oem
+        set_dns
         do_block
         set_prop 1
     ;;
