@@ -23,8 +23,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += privacy-friendly-netmonitor
 # IPTABLES Block script
 PRODUCT_PACKAGES += z_iptables
-# YalpStore
-PRODUCT_PACKAGES += YalpStore
+# AuroraStore
+PRODUCT_PACKAGES += AuroraStore
 # Bromite Webview
 PRODUCT_PACKAGES += bromite-webview
 
