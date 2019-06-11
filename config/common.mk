@@ -18,7 +18,6 @@ PRODUCT_PACKAGES += \
     MozillaNlpBackend \
     NominatimNlpBackend \
     com.google.android.maps.jar \
-    RemoteDroidGuard \
     additional_repos.xml
 # Privacy-friendly netmonitor
 PRODUCT_PACKAGES += privacy-friendly-netmonitor
