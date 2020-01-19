@@ -8,10 +8,6 @@ PRODUCT_OTA_PUBLIC_KEYS := $(OWN_KEYS_DIR)/releasekey
 PRODUCT_EXTRA_RECOVERY_KEYS := $(OWN_KEYS_DIR)/releasekey
 endif
 
-# Updater URI
-PRODUCT_PROPERTY_OVERRIDES += \
-    lineage.updater.uri=https://raw.githubusercontent.com/lin15-microG/OTA/lin-15.1-microG/$(LINEAGE_BUILD).json
-
 # microG packages
 PRODUCT_PACKAGES += \
     GmsCore \
@@ -182,7 +178,6 @@ PRODUCT_PACKAGES += \
     Jelly \
     LockClock \
     Trebuchet \
-    Updater \
     WallpaperPicker \
     WeatherProvider
 
